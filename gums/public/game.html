@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark | The #1 Game Site</title>
+    <link rel="stylesheet" href="/assets/styles/gameplayer.css">
+    <link rel="stylesheet" href="/assets/styles/waves.css">
+    <link rel="stylesheet" href="/assets/styles/tooltip.css">
+    <link rel="icon" href="/assets/imgs/logos/sparklogo.ico">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9036VPDME"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-N9036VPDME');
+    </script>
+
+</head>
+
+<body>
+
+    <div id="more-games">
+        <div id="toolbox">
+            <div id="logo" data-tooltip="Return to Games">
+                <img src="/assets/imgs/logos/sparklogo.png" alt="Spark" id="logo-img">
+            </div>
+        </div>
+        <div class="game-container">
+            <div id="unofficial">
+                <h2 id="unofficial-text">This game is not affiliated with Spark. Any advertisments you see in-game are
+                    not a result of any of Spark's desires.</h2>
+                <button id="unofficial-close">Okay</button>
+            </div>
+            <iframe id="gameframe" scrolling="no"></iframe>
+            <div class="game-bar">
+                <div id="game-title">
+                    <img src="" alt="Game Logo" id="gamelogo">
+                    <h1 id="game-name-title"></h1>
+                </div>
+                <div id="fullscreen-button" data-tooltip="Toggle Fullscreen">
+                    <img src="/assets/imgs/svg/fullscreen.svg" alt="Fullscreen" id="fullscreen-icon">
+                </div>
+                <div id="bug-button" data-tooltip="Report a Bug">
+                    <img src="/assets/imgs/svg/bug.svg" alt="Report" id="bug-icon">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/js/gameplayer.js"></script>
+</body>
+
+</html>
