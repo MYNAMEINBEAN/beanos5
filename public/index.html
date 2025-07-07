@@ -172,6 +172,125 @@
     </div>
   </div>
 
+  <!-- INTERACTIVE HACKER TOYS SECTION -->
+<div id="hacker-interactive-launcher" style="position:fixed;bottom:30px;right:30px;z-index:100000;">
+  <button id="open-interactive" style="background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:12px 22px;font-family:'Fira Mono',monospace;font-size:1.1rem;border-radius:8px;box-shadow:0 0 10px #00ff41;cursor:pointer;">Hacker Interactive</button>
+</div>
+<div id="interactive-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(15,17,26,0.97);z-index:100001;align-items:center;justify-content:center;">
+  <div style="background:#181c24;border:1px solid #00ff41;box-shadow:0 0 20px #00ff41;border-radius:12px;padding:2rem 2.5rem;max-width:90vw;max-height:90vh;overflow:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+      <span style="color:#00ff41;font-size:1.5rem;font-family:'Fira Mono',monospace;font-weight:bold;">Choose an Interactive</span>
+      <button id="close-interactive" style="background:none;border:none;color:#00ff41;font-size:2rem;cursor:pointer;">&times;</button>
+    </div>
+    <div id="interactive-options" style="display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;">
+      <button class="interactive-btn" data-interactive="matrix" style="background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:1rem 2rem;font-family:'Fira Mono',monospace;font-size:1rem;border-radius:8px;box-shadow:0 0 8px #00ff41;cursor:pointer;">Matrix Rain</button>
+      <button class="interactive-btn" data-interactive="typewriter" style="background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:1rem 2rem;font-family:'Fira Mono',monospace;font-size:1rem;border-radius:8px;box-shadow:0 0 8px #00ff41;cursor:pointer;">Typewriter Text</button>
+      <button class="interactive-btn" data-interactive="asciiart" style="background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:1rem 2rem;font-family:'Fira Mono',monospace;font-size:1rem;border-radius:8px;box-shadow:0 0 8px #00ff41;cursor:pointer;">ASCII Art Generator</button>
+      <button class="interactive-btn" data-interactive="hackerclock" style="background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:1rem 2rem;font-family:'Fira Mono',monospace;font-size:1rem;border-radius:8px;box-shadow:0 0 8px #00ff41;cursor:pointer;">Hacker Clock</button>
+      <button class="interactive-btn" data-interactive="binary" style="background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:1rem 2rem;font-family:'Fira Mono',monospace;font-size:1rem;border-radius:8px;box-shadow:0 0 8px #00ff41;cursor:pointer;">Binary Converter</button>
+    </div>
+    <div id="interactive-content" style="margin-top:2rem;"></div>
+  </div>
+</div>
+<script>
+// --- INTERACTIVE HACKER TOYS LOGIC ---
+const openBtn = document.getElementById('open-interactive');
+const modal = document.getElementById('interactive-modal');
+const closeBtn = document.getElementById('close-interactive');
+const options = document.querySelectorAll('.interactive-btn');
+const content = document.getElementById('interactive-content');
+
+openBtn.onclick = () => { modal.style.display = 'flex'; content.innerHTML = ''; };
+closeBtn.onclick = () => { modal.style.display = 'none'; content.innerHTML = ''; };
+window.addEventListener('keydown', e => { if (e.key === 'Escape') { modal.style.display = 'none'; content.innerHTML = ''; }});
+
+options.forEach(btn => {
+  btn.onclick = () => {
+    content.innerHTML = '';
+    switch(btn.dataset.interactive) {
+      case 'matrix':
+        content.innerHTML = '<canvas id="matrix-interactive" style="width:100%;height:40vh;background:#0f111a;border:1px solid #00ff41;"></canvas>';
+        setTimeout(() => { // Matrix rain in modal
+          const canvas = document.getElementById('matrix-interactive');
+          const ctx = canvas.getContext('2d');
+          canvas.width = content.offsetWidth;
+          canvas.height = 240;
+          const fontSize = 18;
+          const columns = Math.floor(canvas.width / fontSize);
+          const drops = Array(columns).fill(1);
+          function drawMatrix() {
+            ctx.fillStyle = 'rgba(15,17,26,0.08)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = fontSize + 'px Fira Mono, Consolas, monospace';
+            ctx.fillStyle = '#00ff41';
+            for (let i = 0; i < drops.length; i++) {
+              const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+              ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+              if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; }
+              drops[i]++;
+            }
+          }
+          let interval = setInterval(drawMatrix, 50);
+          modal.onmouseleave = () => clearInterval(interval);
+        }, 100);
+        break;
+      case 'typewriter':
+        content.innerHTML = '<div style="font-size:1.2rem;min-height:2em;" id="typewriter"></div><input id="typewriter-input" type="text" placeholder="Type something..." style="margin-top:1em;width:80%;background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:0.5em;font-family:inherit;">';
+        const twInput = document.getElementById('typewriter-input');
+        const twDiv = document.getElementById('typewriter');
+        twInput.oninput = () => {
+          let i = 0;
+          twDiv.textContent = '';
+          const txt = twInput.value;
+          function type() {
+            if (i < txt.length) {
+              twDiv.textContent += txt.charAt(i);
+              i++;
+              setTimeout(type, 60);
+            }
+          }
+          type();
+        };
+        break;
+      case 'asciiart':
+        content.innerHTML = '<input id="ascii-input" type="text" placeholder="Enter text..." style="width:80%;background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:0.5em;font-family:inherit;"><pre id="ascii-output" style="margin-top:1em;color:#00ff41;font-family:monospace;font-size:1.1em;"></pre>';
+        const asciiInput = document.getElementById('ascii-input');
+        const asciiOutput = document.getElementById('ascii-output');
+        asciiInput.oninput = () => {
+          asciiOutput.textContent = '';
+          const chars = asciiInput.value.split('');
+          chars.forEach(c => {
+            asciiOutput.textContent += c.charCodeAt(0).toString(16).toUpperCase() + ' ';
+          });
+        };
+        break;
+      case 'hackerclock':
+        content.innerHTML = '<div id="hacker-clock" style="font-size:2.5em;text-align:center;margin-top:1em;font-family:monospace;"></div>';
+        function updateClock() {
+          const d = new Date();
+          document.getElementById('hacker-clock').textContent = d.toLocaleTimeString('en-GB', { hour12: false }) + ' | ' + d.toLocaleDateString('en-GB');
+        }
+        updateClock();
+        let clockInterval = setInterval(updateClock, 1000);
+        modal.onmouseleave = () => clearInterval(clockInterval);
+        break;
+      case 'binary':
+        content.innerHTML = '<input id="binary-input" type="text" placeholder="Text to binary..." style="width:80%;background:#0f111a;color:#00ff41;border:1px solid #00ff41;padding:0.5em;font-family:inherit;"><pre id="binary-output" style="margin-top:1em;color:#00ff41;font-family:monospace;font-size:1.1em;"></pre>';
+        const binInput = document.getElementById('binary-input');
+        const binOutput = document.getElementById('binary-output');
+        binInput.oninput = () => {
+          binOutput.textContent = '';
+          for (let i = 0; i < binInput.value.length; i++) {
+            binOutput.textContent += binInput.value[i].charCodeAt(0).toString(2).padStart(8, '0') + ' ';
+          }
+        };
+        break;
+    }
+  };
+});
+</script>
+<!-- END INTERACTIVE HACKER TOYS SECTION -->
+
   <style>
     .sz-link {
       position: fixed;
@@ -208,6 +327,7 @@
   <script src="/assets/js/taskbar.js"></script>
   <script src="/assets/js/window-manager.js"></script>
   <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/hacker-home.js"></script>
 </body>
 
 </html>

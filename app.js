@@ -67,9 +67,15 @@ fastify.get("/", (request, reply) => {
     return reply.sendFile("index.html");
 });
 
-
+// Only return index.html for unknown routes that are not static files
 fastify.setNotFoundHandler((request, reply) => {
-    return reply.sendFile("index.html");
+    // If the request is for a file (has an extension), return 404
+    if (/\.[a-zA-Z0-9]+$/.test(request.raw.url)) {
+        reply.code(404).type('text/plain').send('404 Not Found');
+    } else {
+        // Otherwise, return index.html for SPA routing
+        return reply.sendFile("index.html");
+    }
 });
 
 

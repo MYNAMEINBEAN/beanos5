@@ -186,7 +186,7 @@ function renderPinnedApps() {
                 launchApp2("appstore", "/srcdocs/apps/appstore.html");
             }
             else if (app.name == "Game Hub") {
-                launchApp("gamehub", "https://sparkgames.xyz");
+                launchApp("gamehub", "/srcdocs/gums/");
             }
             else {
                 launchApp(app.name, app.url);

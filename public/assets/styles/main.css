@@ -3,6 +3,8 @@
     --secondary: rgb(255, 255, 255);
     --font: rgb(255, 255, 255);
     --accent: rgb(0, 153, 255);
+    --hacker-bg: linear-gradient(135deg, #0f111a 60%, #1a1f2b 100%);
+    --hacker-glow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 30px #00ff41;
 }
 
 @font-face {
@@ -22,9 +24,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    box-shadow: 0 0 30px var(--accent);
-    border-radius: 10px;
+    background: #00ff41 !important;
+    box-shadow: var(--hacker-glow) !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -36,6 +37,9 @@ body {
     font-family: "font";
     overflow: hidden;
     height: 100vh;
+    background: var(--hacker-bg) !important;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 2px #00ff41, 0 0 10px #00ff4144;
 }
 
 #background {
@@ -45,7 +49,8 @@ body {
     width: 100vw;
     height: 100vh;
     border: none;
-    background-color: var(--primary);
+    background: var(--hacker-bg) !important;
+    filter: blur(0.5px) brightness(0.8);
     z-index: -100;
 }
 
@@ -68,7 +73,7 @@ body {
     font-size: 6vw;
     margin: 0;
     background: -webkit-linear-gradient(#00b7ff, #ffffff);
-    text-shadow: 0 0 5vh var(--accent);
+    text-shadow: var(--hacker-glow) !important;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -1169,3 +1174,66 @@ input[type="text"]:focus {
     animation: maximize-window 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     transform-origin: bottom center;
 }
+
+/* --- HACKER THEME OVERRIDE --- */
+:root {
+    --primary: #0f111a;
+    --secondary: #00ff41;
+    --font: #00ff41;
+    --accent: #00ff41;
+}
+
+body {
+    background: var(--hacker-bg) !important;
+    color: var(--font) !important;
+    font-family: 'Fira Mono', 'Consolas', 'monospace', 'font';
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 2px #00ff41, 0 0 10px #00ff4144;
+}
+
+#background {
+    background: var(--hacker-bg) !important;
+    filter: blur(0.5px) brightness(0.8);
+}
+
+.window, .app-icon, #big, #small, #footer, .context-menu, .sz-link, .window, .custom-tooltip {
+    box-shadow: var(--hacker-glow) !important;
+    border: 1px solid #00ff41 !important;
+    background: rgba(15, 17, 26, 0.95) !important;
+    color: #00ff41 !important;
+}
+
+#big, #title, .window, .app-icon, .context-menu, .sz-link {
+    text-shadow: var(--hacker-glow) !important;
+}
+
+input, button, select, textarea {
+    background: #181c24 !important;
+    color: #00ff41 !important;
+    border: 1px solid #00ff41 !important;
+    box-shadow: 0 0 5px #00ff4144 !important;
+}
+
+/* Matrix rain effect overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 99999;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,255,65,0.08) 0px,
+        rgba(0,255,65,0.12) 2px,
+        transparent 4px,
+        transparent 20px
+    );
+    animation: matrix-rain 1.5s linear infinite;
+}
+
+@keyframes matrix-rain {
+    0% { background-position-y: 0; }
+    100% { background-position-y: 20px; }
+}
+
+/* --- END HACKER THEME OVERRIDE --- */
